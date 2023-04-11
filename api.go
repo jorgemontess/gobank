@@ -36,18 +36,23 @@ func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 
 
 
+//listenAddr almacena la direccion en la que el servidor API debe escuchar
+//para recibir solicitudes
+
 type APIServer struct{
     listenAddr string
 
 }
 
 //CONSTRUCTOR APIServer
+//NewAPIServer devuelve un puntero a una instancia de la estructura APIServer
 func NewAPIServer(listenAddr string) *APIServer {
     return &APIServer{
         listenAddr: listenAddr,
     }
 }
 
+//Run Funcion que corre el servidor y es llamada desde main
 func (s *APIServer) Run() {
     
     router := mux.NewRouter()
@@ -59,13 +64,16 @@ func (s *APIServer) Run() {
 
     http.ListenAndServe(s.listenAddr, router)
 
-
 }
 
 // -- HANDLERS --
 
+
+//handleAccount pertenece al struct de APIServer
+//para poder acceder a los datos se utiliza s
 func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error {
 
+    fmt.Println("Esto es S: ", s)
     if r.Method == "GET" {
         return s.handleGetAccount(w, r)
     }
